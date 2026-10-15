@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { CopyEmail } from "@/components/ui/copy-email";
 import { Download, GitHub, LinkedIn, Mail } from "@/components/ui/icons";
 import { ButtonLink, Container, buttonClass } from "@/components/ui/primitives";
@@ -35,10 +34,10 @@ export function Contact({ profile }: { profile: Profile }) {
               <GitHub size={16} />
               GitHub
             </ButtonLink>
-            <Link href="/resume" className={buttonClass("ghost")}>
+            <a href={profile.resumePdf} download={profile.resumePdfName} className={buttonClass("ghost")}>
               <Download size={16} />
-              Résumé
-            </Link>
+              Résumé (PDF)
+            </a>
           </div>
         </div>
       </Container>

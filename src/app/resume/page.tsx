@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { ArrowRight } from "@/components/ui/icons";
+import { ArrowRight, Download } from "@/components/ui/icons";
 import { buttonClass } from "@/components/ui/primitives";
 import { profile } from "@/content/profile";
-import { PrintButton } from "./print-button";
 
 export const metadata: Metadata = {
   title: "Résumé",
@@ -22,7 +21,10 @@ export default function ResumePage() {
           ← Back to portfolio
         </Link>
         <div className="flex gap-2">
-          <PrintButton />
+          <a href={profile.resumePdf} download={profile.resumePdfName} className={buttonClass("secondary", "h-10")}>
+            <Download size={16} />
+            Download PDF
+          </a>
           <a href={`mailto:${profile.email}`} className={buttonClass("primary", "h-10")}>
             Contact
             <ArrowRight size={16} />

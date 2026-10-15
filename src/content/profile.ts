@@ -73,6 +73,8 @@ export const profile = {
   avatar: "/avatar.jpg" as string | undefined,
   siteUrl: "https://arthurcarneiro.vercel.app",
   repoUrl: "https://github.com/Silva015/portfolio",
+  resumePdf: "/arthur-carneiro-resume.pdf",
+  resumePdfName: "Arthur-Carneiro-Resume.pdf",
   socials: {
     linkedin: "https://www.linkedin.com/in/arthur-carneiro-dev",
     github: "https://github.com/Silva015",

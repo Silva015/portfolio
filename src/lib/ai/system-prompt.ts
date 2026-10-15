@@ -6,7 +6,7 @@ function renderProfile(p: Profile) {
   lines.push(`# ${p.name} (full name ${p.fullName}): ${p.headline}`);
   lines.push(`Location: ${p.location} (${p.timezone}). ${p.availability}.`);
   lines.push(`Email: ${p.email} · LinkedIn: ${p.socials.linkedin} · GitHub: ${p.socials.github}`);
-  lines.push(`Website: ${p.siteUrl} · Résumé page: ${p.siteUrl}/resume`);
+  lines.push(`Website: ${p.siteUrl} · Résumé page: ${p.siteUrl}/resume · Résumé PDF: ${p.siteUrl}${p.resumePdf}`);
   lines.push("", "## About", ...p.about);
   lines.push("", "## Quick facts", ...p.facts.map((f) => `- ${f.label}: ${f.value}`));
   lines.push("", "## Highlights", ...p.impact.map((i) => `- ${i.value}: ${i.label}`));

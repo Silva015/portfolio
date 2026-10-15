@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import { OpenChatButton } from "@/components/chat/open-chat-button";
-import { ArrowRight, GitHub, LinkedIn, Mail, MapPin, Sparkles } from "@/components/ui/icons";
+import { ArrowRight, Download, GitHub, LinkedIn, Mail, MapPin, Sparkles } from "@/components/ui/icons";
 import { Avatar, ButtonLink, Container, buttonClass } from "@/components/ui/primitives";
 import type { Profile } from "@/content/profile";
 
@@ -72,6 +72,15 @@ export function Hero({ profile, chatEnabled }: { profile: Profile; chatEnabled: 
               Get in touch
             </ButtonLink>
             <div className="flex items-center gap-1">
+              <ButtonLink
+                variant="ghost"
+                href={profile.resumePdf}
+                download={profile.resumePdfName}
+                className="px-4"
+              >
+                <Download size={17} />
+                Résumé
+              </ButtonLink>
               <ButtonLink
                 variant="ghost"
                 href={profile.socials.github}
