@@ -357,10 +357,11 @@ export const profile = {
       problem:
         "Forensic experts need consistent ways to classify ballistic wounds and estimate shooting distance.",
       built: [
-        "Machine learning models applied to a forensic ballistics dataset to classify gunshot entry/exit wounds and estimate shooting distance.",
-        "Transfer learning with ResNet152 combined with Kolmogorov–Arnold Networks (ConvKAN, PureKAN, TransferKAN) in PyTorch.",
+        "Hybrid PyTorch model: a pre-trained ResNet152 (transfer learning) with a Kolmogorov–Arnold Network (KAN) classifier in place of the usual dense layers, benchmarked against ConvKAN and PureKAN variants.",
+        "Identifies entry/exit gunshot wounds and estimates shooting distance on 2,551 real crime-scene images (FDCPUnBGunshotDB).",
+        "Case-isolated 5-fold cross-validation, so photos of the same case never land in both training and test, plus data augmentation.",
       ],
-      outcome: ["Accepted at SIBGRAPI 2026", "Workshop of Undergraduate Works"],
+      outcome: ["0.908 AUC on entry/exit", "Case-isolated 5-fold CV", "Accepted at SIBGRAPI 2026"],
       stack: ["Python", "PyTorch", "ResNet152", "KAN"],
       visual: "research",
       links: [{ label: "Research repo", href: "https://github.com/Silva015/tcc-2026" }],
@@ -385,7 +386,7 @@ export const profile = {
         "AI agents",
         "Generative AI & prompt engineering",
         "NLP",
-        "Machine learning",
+        "Deep learning (PyTorch: ResNet, KANs, transfer learning)",
         "n8n automations",
       ],
     },
@@ -412,7 +413,7 @@ export const profile = {
     period: "2021 – Dec 2026 (expected)",
     coursework: "Natural Language Processing, Data Structures & Algorithms, Software Architecture",
     thesis:
-      "TransferKAN: ballistic wound classification via transfer learning and Kolmogorov–Arnold Networks. Accepted as a poster at SIBGRAPI 2026 (Workshop of Undergraduate Works).",
+      "TransferKAN, a hybrid model pairing a pre-trained ResNet152 (transfer learning) with a Kolmogorov–Arnold Network (KAN) classifier to identify entry/exit gunshot wounds and shooting distance on 2,551 real crime-scene images (FDCPUnBGunshotDB). Case-isolated 5-fold cross-validation and data augmentation; 0.908 AUC on entry/exit. Accepted as a poster at SIBGRAPI 2026 (Workshop of Undergraduate Works).",
   },
 
   certifications: list<Certification>([
