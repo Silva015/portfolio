@@ -1,26 +1,195 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
+/* Dark is the default; the inline script in layout.tsx swaps to light before first paint. */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #08090a;
+  --bg-elev: #0e0f11;
+  --surface: #141518;
+  --surface-2: #1b1c20;
+  --border: rgb(255 255 255 / 0.08);
+  --border-strong: rgb(255 255 255 / 0.16);
+  --fg: #ededee;
+  --muted: #a3a3ab;
+  --subtle: #7c7c86;
+  --accent: #5eead4;
+  --accent-strong: #2dd4bf;
+  --accent-soft: rgb(94 234 212 / 0.12);
+  --accent-fg: #03201b;
+  --glow: rgb(45 212 191 / 0.18);
+  --glow-2: rgb(129 140 248 / 0.12);
+  --grid: rgb(255 255 255 / 0.035);
+  --code-key: #93c5fd;
+  --code-str: #fcd34d;
+  --code-kw: #f0abfc;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #fafaf8;
+  --bg-elev: #ffffff;
+  --surface: #f2f2ef;
+  --surface-2: #e9e9e5;
+  --border: rgb(10 10 12 / 0.09);
+  --border-strong: rgb(10 10 12 / 0.18);
+  --fg: #0b0b0d;
+  --muted: #4f4f57;
+  --subtle: #6b6b73;
+  --accent: #0f766e;
+  --accent-strong: #0d9488;
+  --accent-soft: rgb(13 148 136 / 0.1);
+  --accent-fg: #ffffff;
+  --glow: rgb(13 148 136 / 0.14);
+  --glow-2: rgb(99 102 241 / 0.1);
+  --grid: rgb(10 10 12 / 0.045);
+  --code-key: #1d4ed8;
+  --code-str: #a16207;
+  --code-kw: #a21caf;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-bg: var(--bg);
+  --color-bg-elev: var(--bg-elev);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-fg: var(--accent-fg);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-instrument-serif);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Background texture behind the hero */
+.bg-grid {
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+}
+
+.bg-glow {
+  background:
+    radial-gradient(40rem 28rem at 15% 0%, var(--glow), transparent 70%),
+    radial-gradient(36rem 26rem at 90% 10%, var(--glow-2), transparent 70%);
+}
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* Entrance animation for the hero (pure CSS, no JS needed) */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+
+/* Scroll reveal, only where scroll-driven animations are supported */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--accent-soft);
+  }
+  50% {
+    box-shadow: 0 0 0 6px transparent;
+  }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.caret {
+  animation: blink 1.1s steps(1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  body {
+    background: #fff;
+  }
 }
