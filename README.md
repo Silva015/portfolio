@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Arthur Carneiro: Portfolio
 
-## Getting Started
+Personal portfolio for **Arthur Carneiro**, Full-Stack & AI Engineer.
+It's built for recruiters hiring for remote Full-Stack and AI Engineering roles.
 
-First, run the development server:
+**Live:** https://arthurcarneiro.vercel.app
+
+## Highlights
+
+- **Ask my AI:** a streaming chat that answers recruiters' questions about Arthur's experience. It's grounded only in the profile data and runs on Claude Haiku with prompt caching.
+- **One source of truth:** [`src/content/profile.ts`](src/content/profile.ts) feeds the home page, the printable `/resume` page and the AI system prompt.
+- **Static by default:** every page is prerendered. The only server code is the chat endpoint.
+- **Polish:**
+  - Dark and light themes with no flash on load
+  - CSS-only scroll reveals that respect `prefers-reduced-motion`
+  - Generated Open Graph image, JSON-LD `Person` data, sitemap and robots
+
+## Stack
+
+Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · Anthropic SDK · Vercel · GitHub Actions
+
+## Run locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
+cp .env.example .env.local   # optional: add ANTHROPIC_API_KEY to enable the chat
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Command          | What it does            |
+| ---------------- | ----------------------- |
+| `pnpm dev`       | Start the dev server    |
+| `pnpm lint`      | ESLint                  |
+| `pnpm typecheck` | TypeScript, no emit     |
+| `pnpm build`     | Production build        |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## How the AI assistant works
 
-## Learn More
+- **Server:** [`src/app/api/chat/route.ts`](src/app/api/chat/route.ts) validates the conversation and calls `claude-haiku-5-5`, then streams the text back as plain text.
+  - Only the last 6 messages are kept, each capped at 500 characters.
+  - Rate limit: 10 requests per 10 minutes per IP.
+- **System prompt:** [`src/lib/ai/system-prompt.ts`](src/lib/ai/system-prompt.ts) renders the profile into a frozen system prompt, cached with `cache_control`. The rules keep answers short, factual and on-topic.
+- **No key, no chat:** without `ANTHROPIC_API_KEY` the endpoint returns `503` and the chat UI isn't rendered at all.
 
-To learn more about Next.js, take a look at the following resources:
+### Enable it in production
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Create a key at [console.anthropic.com](https://console.anthropic.com) and set a monthly spend limit.
+2. In Vercel, go to **Project → Settings → Environment Variables** and add `ANTHROPIC_API_KEY` for Production.
+3. Redeploy. The flag is read at build time.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Updating content
 
-## Deploy on Vercel
+Edit [`src/content/profile.ts`](src/content/profile.ts).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Photo:** add `public/avatar.jpg` and set `avatar: "/avatar.jpg"`.
+- **Project screenshots:** add them under `public/projects/` and set `image` on the project.
+- **Links:** add App Store, Play Store or live URLs under `links`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploy
+
+Every push to `main` deploys to production on Vercel through the GitHub integration. CI runs lint, the typecheck and the build on every push and pull request.
