@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { ComponentProps, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -97,5 +98,42 @@ export function Monogram({ initials, className }: { initials: string; className?
     >
       {initials}
     </span>
+  );
+}
+
+/** Profile photo when one is configured, otherwise the monogram. */
+export function Avatar({
+  src,
+  initials,
+  size,
+  alt = "",
+  priority,
+  className,
+}: {
+  src?: string;
+  initials: string;
+  size: number;
+  alt?: string;
+  priority?: boolean;
+  className?: string;
+}) {
+  if (!src) {
+    return (
+      <Monogram
+        initials={initials}
+        className={cn("rounded-full text-sm", className)}
+      />
+    );
+  }
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      width={size}
+      height={size}
+      priority={priority}
+      className={cn("shrink-0 rounded-full object-cover ring-1 ring-border-strong", className)}
+      style={{ width: size, height: size }}
+    />
   );
 }

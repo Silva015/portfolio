@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { profile } from "@/content/profile";
 
@@ -5,7 +7,16 @@ export const alt = `${profile.name}, ${profile.headline}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OpengraphImage() {
+/** Cached so the image is prerendered at build time, when /public is on disk. */
+async function loadPhoto(path: string) {
+  "use cache";
+  const bytes = await readFile(join(process.cwd(), "public", path));
+  return `data:image/jpeg;base64,${bytes.toString("base64")}`;
+}
+
+export default async function OpengraphImage() {
+  const photo = profile.avatar ? await loadPhoto(profile.avatar) : null;
+
   return new ImageResponse(
     (
       <div
@@ -21,8 +32,25 @@ export default function OpengraphImage() {
             "radial-gradient(circle at 12% 0%, rgba(45,212,191,0.28), transparent 45%), radial-gradient(circle at 95% 10%, rgba(129,140,248,0.2), transparent 40%)",
           color: "#ededee",
           fontFamily: "sans-serif",
+          position: "relative",
         }}
       >
+        {photo ? (
+          <img
+            src={photo}
+            alt=""
+            width={190}
+            height={190}
+            style={{
+              position: "absolute",
+              top: 60,
+              right: 72,
+              borderRadius: 999,
+              border: "4px solid rgba(94,234,212,0.6)",
+              objectFit: "cover",
+            }}
+          />
+        ) : null}
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <div
             style={{

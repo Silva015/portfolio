@@ -1,4 +1,4 @@
-import { Section, SectionHeading } from "@/components/ui/primitives";
+import { Avatar, Section, SectionHeading } from "@/components/ui/primitives";
 import type { Profile } from "@/content/profile";
 
 export function About({ profile }: { profile: Profile }) {
@@ -25,14 +25,29 @@ export function About({ profile }: { profile: Profile }) {
         </div>
 
         <aside className="reveal">
-          <dl className="divide-y divide-border rounded-2xl border border-border bg-bg-elev/60">
-            {profile.facts.map((fact) => (
-              <div key={fact.label} className="flex flex-col gap-1 px-5 py-4">
-                <dt className="font-mono text-[11px] tracking-[0.16em] text-subtle uppercase">{fact.label}</dt>
-                <dd className="text-sm text-fg">{fact.value}</dd>
+          <div className="overflow-hidden rounded-2xl border border-border bg-bg-elev/60">
+            <div className="flex items-center gap-4 border-b border-border px-5 py-5">
+              <Avatar
+                src={profile.avatar}
+                initials={profile.initials}
+                size={72}
+                alt={`Portrait of ${profile.name}`}
+                className="size-[72px]"
+              />
+              <div className="min-w-0">
+                <p className="font-semibold">{profile.name}</p>
+                <p className="text-sm text-accent">{profile.headline}</p>
               </div>
-            ))}
-          </dl>
+            </div>
+            <dl className="divide-y divide-border">
+              {profile.facts.map((fact) => (
+                <div key={fact.label} className="flex flex-col gap-1 px-5 py-4">
+                  <dt className="font-mono text-[11px] tracking-[0.16em] text-subtle uppercase">{fact.label}</dt>
+                  <dd className="text-sm text-fg">{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </aside>
       </div>
     </Section>

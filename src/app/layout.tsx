@@ -63,6 +63,8 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: profile.name,
+  alternateName: profile.fullName,
+  ...(profile.avatar ? { image: `${profile.siteUrl}${profile.avatar}` } : {}),
   jobTitle: profile.headline,
   description: profile.tagline,
   url: profile.siteUrl,

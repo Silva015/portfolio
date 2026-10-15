@@ -3,7 +3,7 @@ import { profile, type Profile } from "@/content/profile";
 function renderProfile(p: Profile) {
   const lines: string[] = [];
 
-  lines.push(`# ${p.name}: ${p.headline}`);
+  lines.push(`# ${p.name} (full name ${p.fullName}): ${p.headline}`);
   lines.push(`Location: ${p.location} (${p.timezone}). ${p.availability}.`);
   lines.push(`Email: ${p.email} · LinkedIn: ${p.socials.linkedin} · GitHub: ${p.socials.github}`);
   lines.push(`Website: ${p.siteUrl} · Résumé page: ${p.siteUrl}/resume`);
@@ -25,7 +25,7 @@ function renderProfile(p: Profile) {
   lines.push("", "## Projects");
   for (const project of p.projects) {
     lines.push("", `### ${project.name} (${project.category}): ${project.tagline}`);
-    lines.push(`Context: ${project.context}`);
+    lines.push(`Context: ${project.context}${project.status ? ` · Status: ${project.status}` : ""}`);
     lines.push(`Problem: ${project.problem}`);
     lines.push(...project.built.map((b) => `- ${b}`));
     lines.push(`Outcomes: ${project.outcome.join("; ")}`);
@@ -38,6 +38,7 @@ function renderProfile(p: Profile) {
     "",
     "## Education",
     `${p.education.school}: ${p.education.degree}, ${p.education.period}.`,
+    `Key coursework: ${p.education.coursework}.`,
     `Thesis: ${p.education.thesis}`,
   );
   lines.push(

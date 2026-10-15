@@ -108,6 +108,7 @@ export default function ResumePage() {
             <p className="font-mono text-xs text-muted">{profile.education.period}</p>
           </div>
           <p>{profile.education.degree}</p>
+          <p className="text-muted">Key coursework: {profile.education.coursework}</p>
           <p className="mt-1 text-pretty text-muted">{profile.education.thesis}</p>
         </ResumeSection>
 

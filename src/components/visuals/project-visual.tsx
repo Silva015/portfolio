@@ -86,7 +86,7 @@ function Tempo() {
   );
 }
 
-function Pedagogo() {
+function MeuEduca() {
   return (
     <div className="flex h-full items-center gap-3">
       <Panel className="w-[42%] p-3">
@@ -300,7 +300,7 @@ function SparkleGlyph() {
 
 const VISUALS: Record<Kind, () => ReactNode> = {
   tempo: Tempo,
-  pedagogo: Pedagogo,
+  meueduca: MeuEduca,
   gymgames: GymGames,
   platform: Platform,
   leaderboard: Leaderboard,

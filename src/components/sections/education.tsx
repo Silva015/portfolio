@@ -15,6 +15,9 @@ export function Education({ profile }: { profile: Profile }) {
           <p className="font-mono text-xs text-subtle">{education.period}</p>
           <h3 className="mt-2 text-xl font-semibold tracking-tight">{education.school}</h3>
           <p className="text-accent">{education.degree}</p>
+          <p className="mt-3 text-sm text-muted">
+            <span className="text-fg">Key coursework:</span> {education.coursework}
+          </p>
 
           <div className="mt-6 rounded-xl border border-border bg-bg/60 p-5">
             <p className="font-mono text-[11px] tracking-[0.16em] text-subtle uppercase">Thesis · SIBGRAPI 2026</p>

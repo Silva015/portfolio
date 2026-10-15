@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import { OpenChatButton } from "@/components/chat/open-chat-button";
 import { ArrowRight, GitHub, LinkedIn, Mail, MapPin, Sparkles } from "@/components/ui/icons";
-import { ButtonLink, Container, buttonClass } from "@/components/ui/primitives";
+import { Avatar, ButtonLink, Container, buttonClass } from "@/components/ui/primitives";
 import type { Profile } from "@/content/profile";
 
 const delay = (i: number) => ({ "--i": i }) as CSSProperties;
@@ -33,9 +33,10 @@ export function Hero({ profile, chatEnabled }: { profile: Profile; chatEnabled: 
 
           <h1 className="mt-7">
             <span
-              className="rise block font-mono text-sm tracking-wide text-muted sm:text-base"
+              className="rise flex items-center gap-3 font-mono text-sm tracking-wide text-muted sm:text-base"
               style={delay(1)}
             >
+              <Avatar src={profile.avatar} initials={profile.initials} size={48} priority className="size-12" />
               Hi, I&apos;m {profile.name}
             </span>
             <span

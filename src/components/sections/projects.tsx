@@ -46,6 +46,14 @@ function ProjectCard({ project }: { project: Project }) {
       <div className="flex flex-1 flex-col px-2 pt-5 pb-3 sm:px-3">
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
           <span className="rounded-full bg-accent-soft px-2 py-0.5 font-medium text-accent">{project.category}</span>
+          {project.status ? (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-border px-2 py-0.5 text-muted">
+              <span
+                className={project.status === "Live" ? "size-1.5 rounded-full bg-accent" : "size-1.5 rounded-full bg-subtle"}
+              />
+              {project.status}
+            </span>
+          ) : null}
           <span className="text-subtle">{project.context}</span>
         </div>
 
