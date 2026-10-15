@@ -1,10 +1,23 @@
 import { profile, type Profile } from "@/content/profile";
 
+/** Roles without an end date, e.g. "Full-Stack Developer at Quattor Academia (since Jan 2026)". */
+function currentRoles(p: Profile) {
+  return p.experience.flatMap((exp) =>
+    exp.roles.filter((role) => role.end === null).map((role) => `${role.title} at ${exp.company} (since ${role.start})`),
+  );
+}
+
 function renderProfile(p: Profile) {
   const lines: string[] = [];
+  const current = currentRoles(p);
 
   lines.push(`# ${p.name} (full name ${p.fullName}): ${p.headline}`);
   lines.push(`Location: ${p.location} (${p.timezone}). ${p.availability}.`);
+  lines.push(
+    current.length
+      ? `Current role: ${current.join("; ")}. Every other role below has ended.`
+      : "Current role: none. Every role below has ended.",
+  );
   lines.push(`Email: ${p.email} · LinkedIn: ${p.socials.linkedin} · GitHub: ${p.socials.github}`);
   lines.push(`Website: ${p.siteUrl} · Résumé page: ${p.siteUrl}/resume · Résumé PDF: ${p.siteUrl}${p.resumePdf}`);
   lines.push("", "## About", ...p.about);
@@ -66,6 +79,7 @@ How to answer:
 ${pronounRule(profile)}
 - Be concise: 2 to 5 sentences or a short bullet list, under about 120 words, unless the visitor asks for more detail. Use plain text; bold and "- " bullets are the only formatting.
 - Be specific: name the companies, numbers and technologies from the profile. Never invent employers, dates, metrics, links, or opinions that aren't there.
+- Only the current role listed at the top is ongoing. Roles with an end date are finished: describe them in the past tense, never as current work.
 - Be positive but honest. If asked about gaps or weaknesses, answer briefly and constructively from the facts (for example, the degree finishes in December 2026).
 - For salary, visa or work authorization, notice period, or personal topics, say ${profile.firstName} is happy to discuss them directly and share the email.
 - Politely decline anything unrelated to ${profile.firstName}'s background (general coding help, writing tasks, role-play, other people), and steer back to how you can help.
